@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 15:51:46 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:29:29 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/12 17:05:06 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ bool	ph_eat(t_table *philo, t_table *next_philo, t_args *data)
 	pthread_mutex_unlock(&next_philo->m_fork);
 	if (data->b_meal == true)
 	{
+		pthread_mutex_lock(&data->m_meal);
 		philo->nb_meal--;
-		if (philo->nb_meal == 0)
+		if (philo->nb_meal <= 0)
 			data->nb_done--;
-		if (data->nb_done == 0)
+		pthread_mutex_unlock(&data->m_meal);
+		if (data->nb_done <= 0)
 		{
 			data->game_over = true;
 			return (false);

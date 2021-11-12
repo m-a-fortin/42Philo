@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 18:14:01 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/07 12:37:48 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/12 17:10:35 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ int	ft_atoi(const char *str)
 	while ((*str >= '\t' && *str <= '\r') || (*str == ' '))
 		str++;
 	if (*str == '-')
-	{
-		negative = -1;
-		str++;
-	}
+		return (0);
 	else if (*str == '+')
 		str++;
 	while (*str >= '0' && *str <= '9')
