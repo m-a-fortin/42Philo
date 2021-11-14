@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 15:51:49 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:30:25 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/14 12:35:59 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+void	ph_solo(t_table *philo, t_args *data)
+{
+	data->time_save = ph_get_time();
+	philo->starving = ph_get_time();
+	ph_print_state(data, "has taken a fork", philo);
+	while (true)
+	{
+		if (ph_starvation(philo, data) == true || data->game_over == true)
+			return ;
+	}
+}
 
 unsigned long	ph_get_time(void)
 {
@@ -55,10 +67,7 @@ int	ph_exit(t_args *data)
 	while (index < data->nb_philo)
 	{
 		if (pthread_mutex_destroy(&data->philo[index].m_fork) != 0)
-		{
-			printf("ALLO\n");
 			return (ph_free(data));
-		}
 		index++;
 	}
 	ph_free(data);

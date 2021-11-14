@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 14:34:51 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/12 17:00:28 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/14 12:37:05 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ bool			ph_starvation(t_table *philo, t_args *data);
 bool			ph_join(t_args *data);
 bool			ph_print_state(t_args *data, char *string, t_table *philo);
 void			ph_solo(t_table *philo, t_args *data);
+void			ph_first_turn(t_args *data, t_table *philo);
 //ACTIVITY
 bool			ph_wait(t_args *data, long time_to, t_table *philo);
 bool			ph_take_forks(t_table *p, t_table *n_philo, t_args *data);

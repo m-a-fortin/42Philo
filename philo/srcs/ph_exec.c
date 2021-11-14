@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 15:52:07 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/11 13:55:17 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/14 12:37:13 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,22 @@ void	ph_routine_loop(t_args *data, t_table *philo, t_table *next_philo)
 	while (data->game_over == false)
 	{
 		if (turn == 0)
+			ph_first_turn(data, philo);
+		if (ph_starvation(philo, data) == true || data->game_over == true)
 		{
-			data->time_save = ph_get_time();
-			philo->starving = ph_get_time();
+			pthread_mutex_unlock(&philo->m_fork);
+			return ;
+		}
+		if (ph_queue(data, philo, next_philo) == false)
+		{
+			pthread_mutex_unlock(&philo->m_fork);
+			return ;
 		}
 		if (ph_starvation(philo, data) == true || data->game_over == true)
+		{
+			pthread_mutex_unlock(&philo->m_fork);
 			return ;
-		if (data->nb_philo == 1)
-			return (ph_solo(philo, data));
-		if (ph_queue(data, philo, next_philo) == false)
-			return ;
-		if (ph_starvation(philo, data) == true || data->game_over == true)
-			return ;
+		}
 		turn++;
 	}
 }
@@ -95,6 +99,11 @@ void	*ph_routine(void *arg)
 
 	philo = arg;
 	data = philo->data;
+	if (data->nb_philo == 1)
+	{
+		ph_solo(philo, data);
+		return (arg);
+	}
 	if (philo->id == data->nb_philo - 1)
 		next_philo = &data->philo[0];
 	else

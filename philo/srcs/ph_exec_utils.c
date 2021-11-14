@@ -6,7 +6,7 @@
 /*   By: mafortin <mafortin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 14:34:28 by mafortin          #+#    #+#             */
-/*   Updated: 2021/11/11 14:29:42 by mafortin         ###   ########.fr       */
+/*   Updated: 2021/11/14 12:37:22 by mafortin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,11 @@ bool	ph_starvation(t_table *philo, t_args *data)
 		data->game_over = true;
 		printf("%lu %d died\n", check, philo->id + 1);
 		pthread_mutex_unlock(&data->m_write);
+		pthread_mutex_lock(&philo->m_fork);
 		return (true);
 	}
 	pthread_mutex_unlock(&data->m_write);
 	return (false);
-}
-
-void	ph_solo(t_table *philo, t_args *data)
-{
-	ph_print_state(data, "has taken a fork", philo);
-	while (true)
-	{
-		if (ph_starvation(philo, data) == true || data->game_over == true)
-			return ;
-	}
 }
 
 bool	ph_join(t_args *data)
@@ -92,4 +83,10 @@ bool	ph_join(t_args *data)
 		index++;
 	}
 	return (true);
+}
+
+void	ph_first_turn(t_args *data, t_table *philo)
+{
+	data->time_save = ph_get_time();
+	philo->starving = ph_get_time();
 }
